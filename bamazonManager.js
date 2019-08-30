@@ -31,6 +31,9 @@ function multChoice() {
         if (answers.multChoice === "Add to inventory") {
             addInventory();
         }
+        if (answers.multChoice === "Add new product") {
+            addProduct();
+        }
     })
 }
 function readProducts() {
@@ -75,6 +78,7 @@ function addInventory() {
         }
     ]).then(answers => {
         connection.query("SELECT * FROM products", function (err, res) {
+            if (err) throw err;
             for (var i = 0; i < res.length; i++) {
                 if (res[i].product_name === answers.AddInv) {
                     var newStock = res[i].stock_quantity + parseInt(answers.AddInv2);
@@ -82,6 +86,48 @@ function addInventory() {
                     console.log(res[i].product_name + " has " + newStock + " in stock.")
                 }
             }
+        })
+    })
+}
+function addProduct() {
+    inquirer.prompt([
+        {
+            type: 'input',
+            name: "addProduct",
+            message: "Enter name for new product: ",
+        },
+        {
+            type: 'input',
+            name: "addProduct2",
+            message: "Enter product department: "
+        },
+        {
+            type: 'input',
+            name: "addProduct3",
+            message: "Enter price: ",
+        },
+        {
+            type: 'input',
+            name: "addProduct4",
+            message: "Product quantity: ",
+        },
+    ]).then(answers => {
+        connection.query("SELECT * FROM products", function (err, res) {
+            var query = connection.query("INSERT INTO products SET ?",
+                {
+                    id: res.id,
+                    product_name: answers.addProduct,
+                    department_name: answers.addProduct2,
+                    price: answers.addProduct3,
+                    stock_quantity: answers.addProduct4
+                },
+                function (err, res) {
+                    if (err) throw err;
+                    console.log(query.sql);
+                }
+            );
+
+
         })
     })
 }
