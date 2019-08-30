@@ -28,6 +28,9 @@ function multChoice() {
         if (answers.multChoice === "View low inventory") {
             lowInventory();
         }
+        if (answers.multChoice === "Add to inventory") {
+            addInventory();
+        }
     })
 }
 function readProducts() {
@@ -56,5 +59,29 @@ function lowInventory() {
                 console.log('==========================')
             }
         }
+    })
+}
+function addInventory() {
+    inquirer.prompt([
+        {
+            type: 'input',
+            name: "AddInv",
+            message: "Enter item name to restock:",
+        },
+        {
+            type: 'input',
+            name: "AddInv2",
+            message: "How many would you like to add to stock?"
+        }
+    ]).then(answers => {
+        connection.query("SELECT * FROM products", function (err, res) {
+            for (var i = 0; i < res.length; i++) {
+                if (res[i].product_name === answers.AddInv) {
+                    var newStock = res[i].stock_quantity + parseInt(answers.AddInv2);
+                    console.log("Added " + answers.AddInv2 + " to " + res[i].product_name + ".")
+                    console.log(res[i].product_name + " has " + newStock + " in stock.")
+                }
+            }
+        })
     })
 }
