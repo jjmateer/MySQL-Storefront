@@ -24,6 +24,37 @@ function readProducts() {
             console.log("Quantity: " + res[i].stock_quantity)
             console.log('==========================')
         }
+        promptUser();
+        function promptUser() {
+            inquirer.prompt([
+                {
+                    type: 'input',
+                    name: "namequestion",
+                    message: "Product ID: "
+                },
+                {
+                    type: 'input',
+                    name: "Unitsquestion",
+                    message: "Amount: "
+                }
+            ]).then(answers => {
+                for (var i = 0; i < res.length; i++) {
+                    if (res[i].stock_quantity > answers.Unitsquestion) {
+                        if (res[i].product_name === answers.namequestion) {
+                            console.log('You selected: ' + res[i].product_name)
+                            console.log("There are " + res[i].stock_quantity + ' ' + res[i].product_name + 's in stock')
+                            res[i].stock_quantity = res[i].stock_quantity - answers.Unitsquestion;
+                            var totalPrice = answers.Unitsquestion * res[i].price;
+                            console.log("Your total price is: " + "$" + totalPrice);
+                            console.log("There are " + res[i].stock_quantity + ' ' + res[i].product_name + 's in stock after your transaction.')
+                        }
+                    } else if (res[i].stock_quantity <= 0) {
+                        console.log("Insufficient quantity.")
+                    }
+                }
+
+            })
+        }
         connection.end();
     });
 }
