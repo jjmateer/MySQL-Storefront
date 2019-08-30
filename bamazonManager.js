@@ -18,15 +18,15 @@ function multChoice() {
             type: 'list',
             name: "multChoice",
             message: "What would you like to do? ",
-            choices: ["View products for sale", "View Low Inventory", "Add to Inventory", "Add New Product"]
+            choices: ["View products for sale", "View low inventory", "Add to inventory", "Add new product"]
         }
     ]).then(answers => {
-            console.log(answers.multChoice)
+        console.log(answers.multChoice)
         if (answers.multChoice === "View products for sale") {
             readProducts();
         }
-        if (answers.multChoice[1]) {
-            // lowInventory();
+        if (answers.multChoice === "View low inventory") {
+            lowInventory();
         }
     })
 }
@@ -44,10 +44,17 @@ function readProducts() {
     })
 }
 function lowInventory() {
-    // console.log(res[i].stock_quantity)
-    for (var i = 0; i < res.length; i++) {
-        if (res[i].stock_quantity < 3) {
-            console.log(res[i].product_name)
+    connection.query("SELECT * FROM products", function (err, res) {
+        if (err) throw err;
+        for (var i = 0; i < res.length; i++) {
+            if (res[i].stock_quantity < 3) {
+                console.log("ID: " + res[i].id);
+                console.log("Product Name: " + res[i].product_name);
+                console.log("Department: " + res[i].department_name);
+                console.log("Price: " + res[i].price);
+                console.log("Quantity: " + res[i].stock_quantity)
+                console.log('==========================')
+            }
         }
-    }
+    })
 }
