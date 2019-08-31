@@ -48,6 +48,7 @@ function readProducts() {
             console.log('==========================')
         }
     })
+
 }
 function lowInventory() {
     connection.query("SELECT * FROM products", function (err, res) {
@@ -86,6 +87,7 @@ function addInventory() {
                     console.log(res[i].product_name + " has " + newStock + " in stock.")
                 }
             }
+            
         })
     })
 }
@@ -112,22 +114,23 @@ function addProduct() {
             message: "Product quantity: ",
         },
     ]).then(answers => {
-        connection.query("SELECT * FROM products", function (err, res) {
+        connection.query("SELECT * FROM products", function (res) {
+            var lastItem = res.length - 1;
+            var resID = res[lastItem]
             var query = connection.query("INSERT INTO products SET ?",
                 {
-                    id: res.id,
+                    id: resID,
                     product_name: answers.addProduct,
                     department_name: answers.addProduct2,
                     price: answers.addProduct3,
                     stock_quantity: answers.addProduct4
                 },
-                function (err, res) {
+                function (err) {
                     if (err) throw err;
                     console.log(query.sql);
                 }
             );
-
-
         })
     })
+        
 }
