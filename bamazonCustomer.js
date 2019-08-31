@@ -52,23 +52,21 @@ function readProducts() {
                     } else if (res[i].stock_quantity <= 0) {
                         console.log("Insufficient quantity.")
                     }
-                    updateProduct();
-                    function updateProduct() {
-                        connection.query(
-                            "UPDATE products SET ? WHERE ?",
-                            [
-                                {
-                                    stock_quantity: newStock
-                                },
-                                {
-                                    product_name: answers.namequestion
-                                }
-                            ],
-                        );
-                    }
+                    connection.query(
+                        "UPDATE products SET ? WHERE ?",
+                        [
+                            {
+                                stock_quantity: newStock
+                            },
+                            {
+                                product_name: answers.namequestion
+                            }
+                        ],
+                    );
                 }
-
             })
+
         }
+
     });
 }

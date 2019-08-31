@@ -87,37 +87,48 @@ function addInventory() {
                     console.log(res[i].product_name + " has " + newStock + " in stock.")
                 }
             }
-            
+            connection.query(
+                "UPDATE products SET ? WHERE ?",
+                [
+                    {
+                        stock_quantity: newStock
+                    },
+                    {
+                        product_name: answers.AddInv
+                    }
+                ],
+            );
         })
     })
 }
 function addProduct() {
-    inquirer.prompt([
-        {
-            type: 'input',
-            name: "addProduct",
-            message: "Enter name for new product: ",
-        },
-        {
-            type: 'input',
-            name: "addProduct2",
-            message: "Enter product department: "
-        },
-        {
-            type: 'input',
-            name: "addProduct3",
-            message: "Enter price: ",
-        },
-        {
-            type: 'input',
-            name: "addProduct4",
-            message: "Product quantity: ",
-        },
-    ]).then(answers => {
-        connection.query("SELECT * FROM products", function (res) {
+    connection.query("SELECT * FROM products", function (err, res) {
+        if (err) throw err;
+        inquirer.prompt([
+            {
+                type: 'input',
+                name: "addProduct",
+                message: "Enter name for new product: ",
+            },
+            {
+                type: 'input',
+                name: "addProduct2",
+                message: "Enter product department: "
+            },
+            {
+                type: 'input',
+                name: "addProduct3",
+                message: "Enter price: ",
+            },
+            {
+                type: 'input',
+                name: "addProduct4",
+                message: "Product quantity: ",
+            },
+        ]).then(answers => {
             var lastItem = res.length - 1;
-            var resID = res[lastItem]
-            var query = connection.query("INSERT INTO products SET ?",
+            var resID = res[lastItem].id + 1
+            connection.query("INSERT INTO products SET ?",
                 {
                     id: resID,
                     product_name: answers.addProduct,
@@ -127,10 +138,9 @@ function addProduct() {
                 },
                 function (err) {
                     if (err) throw err;
-                    console.log(query.sql);
                 }
             );
         })
     })
-        
+
 }
