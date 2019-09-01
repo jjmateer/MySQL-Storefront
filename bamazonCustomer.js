@@ -11,7 +11,6 @@ connection.connect(function (err) {
     if (err) throw err;
     console.log("connected as id " + connection.threadId + "\n");
 });
-
 readProducts();
 function readProducts() {
     console.log("Selecting all products...\n");
@@ -23,6 +22,7 @@ function readProducts() {
             console.log("Department: " + res[i].department_name);
             console.log("Price: " + res[i].price);
             console.log("Quantity: " + res[i].stock_quantity)
+            console.log("Previous price: " + res[i].product_sales)
             console.log('==========================')
         }
         promptUser();
@@ -40,16 +40,16 @@ function readProducts() {
                 }
             ]).then(answers => {
                 for (var i = 0; i < res.length; i++) {
-                    if (res[i].stock_quantity > answers.Unitsquestion) {
-                        if (res[i].product_name === answers.namequestion) {
-                            console.log('You selected: ' + res[i].product_name)
-                            console.log("There are " + res[i].stock_quantity + ' ' + res[i].product_name + 's in stock')
-                            var newStock = res[i].stock_quantity - answers.Unitsquestion;
-                            var totalPrice = answers.Unitsquestion * res[i].price;
-                            var productSales = totalPrice += totalPrice;
-                            console.log("Your total price is: " + "$" + totalPrice);
-                            console.log("There are " + newStock + ' ' + res[i].product_name + 's in stock after your transaction.')
-                        }
+                    if (res[i].stock_quantity > answers.Unitsquestion && res[i].product_name === answers.namequestion) {
+
+                        console.log('You selected: ' + res[i].product_name)
+                        console.log("There are " + res[i].stock_quantity + ' ' + res[i].product_name + 's in stock')
+                        var newStock = res[i].stock_quantity - answers.Unitsquestion;
+                        var totalPrice = answers.Unitsquestion * res[i].price;
+                        var productSales = res[i].product_sales + totalPrice;
+                        console.log("Your total price is: " + "$" + totalPrice);
+                        console.log("There are " + newStock + ' ' + res[i].product_name + 's in stock after your transaction.')
+
                     } else if (res[i].stock_quantity <= 0) {
                         console.log("Insufficient quantity.")
                     }
