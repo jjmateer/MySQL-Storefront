@@ -26,19 +26,25 @@ function multChoice() {
             salesByDep()
         }
         if (answers.multChoice === "Create New Department") {
-            lowInventory();
+            createNew();
         }
     })
 }
 function salesByDep() {
-    var query = "SELECT departments.department_id, products.department_name, departments.over_head_costs, "
-    query += "products.product_sales, departments.total_profit FROM departments, products";
+    var query = "SELECT d.department_id, d.department_name, d.over_head_costs, "
+    query += "p.product_sales FROM departments AS d JOIN products AS p ON"
+    query+= " d.department_name = p.department_name GROUP BY d.department_name"
     connection.query(query, function (err, res) {
+        // console.log(res)
         if (err) throw err;
-        const table = cTable.getTable(res)
+        // for (var i = 0; i < res.length; i++) {
+        //         var total = res[i].product_sales - res[i].over_head_costs
+        //         res[i].total_profit = total
+        // }
+            const table = cTable.getTable(res)
         console.log(table);
     })
 }
-function lowInventory() {
+function createNew() {
 
 }
