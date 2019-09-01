@@ -48,7 +48,6 @@ function readProducts() {
             console.log('==========================')
         }
     })
-
 }
 function lowInventory() {
     connection.query("SELECT * FROM products", function (err, res) {
@@ -142,5 +141,4 @@ function addProduct() {
             );
         })
     })
-
 }

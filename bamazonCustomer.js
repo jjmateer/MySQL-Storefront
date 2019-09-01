@@ -46,6 +46,7 @@ function readProducts() {
                             console.log("There are " + res[i].stock_quantity + ' ' + res[i].product_name + 's in stock')
                             var newStock = res[i].stock_quantity - answers.Unitsquestion;
                             var totalPrice = answers.Unitsquestion * res[i].price;
+                            var productSales = totalPrice += totalPrice;
                             console.log("Your total price is: " + "$" + totalPrice);
                             console.log("There are " + newStock + ' ' + res[i].product_name + 's in stock after your transaction.')
                         }
@@ -56,12 +57,13 @@ function readProducts() {
                         "UPDATE products SET ? WHERE ?",
                         [
                             {
-                                stock_quantity: newStock
+                                stock_quantity: newStock,
+                                product_sales: productSales
                             },
                             {
                                 product_name: answers.namequestion
                             }
-                        ],
+                        ]
                     );
                 }
             })
