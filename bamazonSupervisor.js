@@ -31,7 +31,9 @@ function multChoice() {
     })
 }
 function salesByDep() {
-    connection.query("SELECT * FROM products", function (err, res) {
+    var query = "SELECT departments.department_id, products.department_name, departments.over_head_costs, "
+    query += "products.product_sales, departments.total_profit FROM departments, products";
+    connection.query(query, function (err, res) {
         if (err) throw err;
         const table = cTable.getTable(res)
         console.log(table);

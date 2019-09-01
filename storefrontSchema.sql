@@ -11,9 +11,11 @@ product_sales DECIMAL(5,2) NULL,
 PRIMARY KEY (id)
 );
 CREATE TABLE departments(
-department_id INTEGER(20) NULL,
+department_id INT NOT NULL AUTO_INCREMENT,
 department_name VARCHAR(30) NULL,
-over_head_costs integer(20) NULL
+over_head_costs DECIMAL(5,2) NULL,
+total_profit DECIMAL(5,2) NULL,
+PRIMARY KEY (department_id)
 );
 INSERT INTO products (id, product_name, department_name, price, stock_quantity, product_sales)
 VALUES (id, 'T-Shirt', 'Clothing', 20.00, 12, 0);
@@ -35,3 +37,5 @@ INSERT INTO products (id, product_name, department_name, price, stock_quantity, 
 VALUES (id, 'Rug', 'Home & Garden', 80.00, 5, 0);
 INSERT INTO products (id, product_name, department_name, price, stock_quantity, product_sales)
 VALUES (id, 'Hat', 'Clothing', 15.00, 50, 0);
+INSERT INTO departments (department_id, department_name, over_head_costs)
+VALUES (department_id, 'Hat', 15.00, 0);
