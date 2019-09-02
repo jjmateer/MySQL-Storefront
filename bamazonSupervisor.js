@@ -35,11 +35,16 @@ function getSales() {
     var query = "SELECT products.department_name, products.product_sales FROM products ORDER BY products.department_name"
     connection.query(query, function (err, res) {
         if (err) throw err;
+        var totalSalesArr = [];
         for (var i = 0; i < res.length; i++) {
-            // console.log(res[i].department_name)
-            if(res[i].department_name === "Clothing")
-            console.log(res[i].product_sales)
+            if (res[i].department_name === "Clothing") {
+                var totalSales = 0
+                totalSales += res[i].product_sales
+                totalSalesArr.push(totalSales)
+                var arrTotal = totalSalesArr.reduce((a, b) => a + b, 0)
+            }
         }
+        console.log(arrTotal)
     })
 }
 function salesByDep() {
