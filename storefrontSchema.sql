@@ -5,15 +5,15 @@ CREATE TABLE products (
 id INT NOT NULL AUTO_INCREMENT,
 product_name VARCHAR(30) NULL,
 department_name VARCHAR(30) NULL,
-price DECIMAL(5, 2) NULL,
+price DECIMAL(10,2) NULL,
 stock_quantity INTEGER(5)NULL,
-product_sales DECIMAL(5,2) NULL,
-PRIMARY KEY (id)
+product_sales DECIMAL(10,2) NULL,
+PRIMARY KEY (id) 
 );
 CREATE TABLE departments(
 department_id INT NOT NULL AUTO_INCREMENT,
 department_name VARCHAR(30) NULL,
-over_head_costs DECIMAL(5,2) NULL,
+over_head_costs DECIMAL(10,2) NULL,
 PRIMARY KEY (department_id)
 );
 INSERT INTO products (id, product_name, department_name, price, stock_quantity, product_sales)
@@ -36,11 +36,11 @@ INSERT INTO products (id, product_name, department_name, price, stock_quantity, 
 VALUES (id, 'Rug', 'Home & Garden', 80.00, 5, 0);
 INSERT INTO products (id, product_name, department_name, price, stock_quantity, product_sales)
 VALUES (id, 'Hat', 'Clothing', 50.00, 50, 0);
-INSERT INTO departments (department_id, department_name, over_head_costs)
-VALUES (department_id, 'Clothing', 200.00);
-INSERT INTO departments (department_id, department_name, over_head_costs)
-VALUES (department_id, 'Home & Garden', 100.00);
-INSERT INTO departments (department_id, department_name, over_head_costs)
-VALUES (department_id, 'Food', 50.00);
-INSERT INTO departments (department_id, department_name, over_head_costs)
-VALUES (department_id, 'Technology', 400.00);
+INSERT INTO departments (department_name, over_head_costs)
+VALUES ('Clothing', 200.00);
+INSERT INTO departments (department_name, over_head_costs)
+VALUES ('Home & Garden', 100.00);
+INSERT INTO departments (department_name, over_head_costs)
+VALUES ('Food', 50.00);
+INSERT INTO departments (department_name, over_head_costs)
+VALUES ('Technology', 400.00);

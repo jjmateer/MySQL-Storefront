@@ -23,26 +23,39 @@ function multChoice() {
         }
     ]).then(answers => {
         if (answers.multChoice === "View Product Sales by Department") {
-            salesByDep()
+            // salesByDep()
+            getSales()
         }
         if (answers.multChoice === "Create New Department") {
             createNew();
         }
     })
 }
+function getSales() {
+    var query = "SELECT products.department_name, products.product_sales FROM products ORDER BY products.department_name"
+    connection.query(query, function (err, res) {
+        if (err) throw err;
+        for (var i = 0; i < res.length; i++) {
+            // console.log(res[i].department_name)
+            if(res[i].department_name === "Clothing")
+            console.log(res[i].product_sales)
+        }
+    })
+}
 function salesByDep() {
     var query = "SELECT d.department_id, d.department_name, d.over_head_costs, "
-    query += "p.product_sales FROM departments AS d JOIN products AS p ON"
-    query+= " d.department_name = p.department_name GROUP BY d.department_name"
+    query += "p.product_sales FROM departments AS d INNER JOIN products AS p ON "
+    query += " d.department_name = p.department_name GROUP BY d.department_name"
+    query += " ORDER BY d.department_name"
     connection.query(query, function (err, res) {
         // console.log(res)
         if (err) throw err;
-        // for (var i = 0; i < res.length; i++) {
-        //         var total = res[i].product_sales - res[i].over_head_costs
-        //         res[i].total_profit = total
-        // }
-            const table = cTable.getTable(res)
+        for (var i = 0; i < res.length; i++) {
+
+        }
+        const table = cTable.getTable(res)
         console.log(table);
+        console.table(res)
     })
 }
 function createNew() {
