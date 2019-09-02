@@ -23,46 +23,20 @@ function multChoice() {
         }
     ]).then(answers => {
         if (answers.multChoice === "View Product Sales by Department") {
-            // salesByDep()
-            getSales()
+            salesByDep()
         }
         if (answers.multChoice === "Create New Department") {
             createNew();
         }
     })
 }
-function getSales() {
-    var query = "SELECT products.department_name, products.product_sales FROM products ORDER BY products.department_name"
-    connection.query(query, function (err, res) {
-        if (err) throw err;
-        var totalSalesArr = [];
-        for (var i = 0; i < res.length; i++) {
-            if (res[i].department_name === "Clothing") {
-                var totalSales = 0
-                totalSales += res[i].product_sales
-                totalSalesArr.push(totalSales)
-                var arrTotal = totalSalesArr.reduce((a, b) => a + b, 0)
-            }
-        }
-        console.log(arrTotal)
-    })
-}
-function salesByDep() {
-    var query = "SELECT d.department_id, d.department_name, d.over_head_costs, "
-    query += "p.product_sales FROM departments AS d INNER JOIN products AS p ON "
-    query += " d.department_name = p.department_name GROUP BY d.department_name"
-    query += " ORDER BY d.department_name"
-    connection.query(query, function (err, res) {
-        // console.log(res)
-        if (err) throw err;
-        for (var i = 0; i < res.length; i++) {
 
-        }
-        const table = cTable.getTable(res)
-        console.log(table);
+function salesByDep() {
+    var query = "SELECT d.department_id, d.department_name, d.over_head_costs, d.department_name, "
+    query += "sum(p.product_sales) as product_sales, sum(p.product_sales) - over_head_costs as total_profit "
+    query += "FROM products p RIGHT JOIN departments d ON p.department_name = d.department_name GROUP BY d.department_name"
+    connection.query(query, function (err, res) {
+        if (err) throw err;
         console.table(res)
     })
-}
-function createNew() {
-
 }
