@@ -26,49 +26,51 @@ function readProducts() {
             console.log('==========================')
         }
         promptUser();
-        function promptUser() {
-            inquirer.prompt([
-                {
-                    type: 'input',
-                    name: "namequestion",
-                    message: "Product ID: "
-                },
-                {
-                    type: 'input',
-                    name: "Unitsquestion",
-                    message: "Amount: "
+
+    })
+}
+
+function promptUser() {
+    connection.query("SELECT * FROM products", function (err, res) {
+        inquirer.prompt([
+            {
+                type: 'input',
+                name: "namequestion",
+                message: "Product ID: "
+            },
+            {
+                type: 'input',
+                name: "Unitsquestion",
+                message: "Amount: "
+            }
+        ]).then(answers => {
+            for (var i = 0; i < res.length; i++) {
+                if (res[i].stock_quantity > answers.Unitsquestion && res[i].product_name === answers.namequestion) {
+
+                    console.log('You selected: ' + res[i].product_name)
+                    console.log("There are " + res[i].stock_quantity + ' ' + res[i].product_name + 's in stock')
+                    var newStock = res[i].stock_quantity - answers.Unitsquestion;
+                    var totalPrice = answers.Unitsquestion * res[i].price;
+                    var productSales = res[i].product_sales + totalPrice;
+                    console.log("Your total price is: " + "$" + totalPrice);
+                    console.log("There are " + newStock + ' ' + res[i].product_name + 's in stock after your transaction.')
+
+                } else if (res[i].stock_quantity <= 0) {
+                    console.log("Insufficient quantity.")
                 }
-            ]).then(answers => {
-                for (var i = 0; i < res.length; i++) {
-                    if (res[i].stock_quantity > answers.Unitsquestion && res[i].product_name === answers.namequestion) {
-
-                        console.log('You selected: ' + res[i].product_name)
-                        console.log("There are " + res[i].stock_quantity + ' ' + res[i].product_name + 's in stock')
-                        var newStock = res[i].stock_quantity - answers.Unitsquestion;
-                        var totalPrice = answers.Unitsquestion * res[i].price;
-                        var productSales = res[i].product_sales + totalPrice;
-                        console.log("Your total price is: " + "$" + totalPrice);
-                        console.log("There are " + newStock + ' ' + res[i].product_name + 's in stock after your transaction.')
-
-                    } else if (res[i].stock_quantity <= 0) {
-                        console.log("Insufficient quantity.")
-                    }
-                    connection.query(
-                        "UPDATE products SET ? WHERE ?",
-                        [
-                            {
-                                stock_quantity: newStock,
-                                product_sales: productSales
-                            },
-                            {
-                                product_name: answers.namequestion
-                            }
-                        ]
-                    );
-                }
-            })
-
-        }
-
-    });
+                connection.query(
+                    "UPDATE products SET ? WHERE ?",
+                    [
+                        {
+                            stock_quantity: newStock,
+                            product_sales: productSales
+                        },
+                        {
+                            product_name: answers.namequestion
+                        }
+                    ]
+                );
+            }
+        })
+    })
 }
