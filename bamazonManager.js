@@ -1,10 +1,11 @@
 var mysql = require("mysql");
 var inquirer = require("inquirer")
+var queryCount = 0;
 var connection = mysql.createConnection({
     host: "localhost",
     port: 3306,
     user: "root",
-    password: "Manila22!",
+    password: "xxx",
     database: "bamazon"
 });
 connection.connect(function (err) {
@@ -48,6 +49,7 @@ function readProducts() {
             console.log('==========================')
         }
     })
+    connection.end()
 }
 function lowInventory() {
     connection.query("SELECT * FROM products", function (err, res) {
@@ -63,6 +65,7 @@ function lowInventory() {
             }
         }
     })
+    connection.end()
 }
 function addInventory() {
     inquirer.prompt([
@@ -96,6 +99,10 @@ function addInventory() {
                         product_name: answers.AddInv
                     }
                 ],
+                function (err) {
+                    if (err) throw err;
+                    connection.end()
+                }
             );
         })
     })
@@ -124,21 +131,25 @@ function addProduct() {
                 name: "addProduct4",
                 message: "Product quantity: ",
             },
-        ]).then(answers => {
-            var lastItem = res.length - 1;
-            var resID = res[lastItem].id + 1
-            connection.query("INSERT INTO products SET ?",
-                {
-                    id: resID,
-                    product_name: answers.addProduct,
-                    department_name: answers.addProduct2,
-                    price: answers.addProduct3,
-                    stock_quantity: answers.addProduct4
-                },
-                function (err) {
-                    if (err) throw err;
-                }
-            );
-        })
+        ])
+            .then(answers => {
+                var lastItem = res.length - 1;
+                var resID = res[lastItem].id + 1
+
+                connection.query("INSERT INTO products SET ?",
+                    {
+                        id: resID,
+                        product_name: answers.addProduct,
+                        department_name: answers.addProduct2,
+                        price: answers.addProduct3,
+                        stock_quantity: answers.addProduct4
+                    },
+                    function (err) {
+                        if (err) throw err;
+                        connection.end()
+                        console.log("Added " + answers.addProduct + " to products.")
+                    }
+                );
+            })
     })
 }
