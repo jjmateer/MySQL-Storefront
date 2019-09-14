@@ -1,6 +1,6 @@
 var mysql = require("mysql");
 var inquirer = require("inquirer")
-var queryCount = 0;
+require("console.table")
 var connection = mysql.createConnection({
     host: "localhost",
     port: 3306,
@@ -40,30 +40,14 @@ function multChoice() {
 function readProducts() {
     connection.query("SELECT * FROM products", function (err, res) {
         if (err) throw err;
-        for (var i = 0; i < res.length; i++) {
-            console.log("ID: " + res[i].id);
-            console.log("Product Name: " + res[i].product_name);
-            console.log("Department: " + res[i].department_name);
-            console.log("Price: " + res[i].price);
-            console.log("Quantity: " + res[i].stock_quantity)
-            console.log('==========================')
-        }
+        console.table(res)
     })
     connection.end()
 }
 function lowInventory() {
-    connection.query("SELECT * FROM products", function (err, res) {
+    connection.query("SELECT * FROM products WHERE stock_quantity < 3", function (err, res) {
         if (err) throw err;
-        for (var i = 0; i < res.length; i++) {
-            if (res[i].stock_quantity < 3) {
-                console.log("ID: " + res[i].id);
-                console.log("Product Name: " + res[i].product_name);
-                console.log("Department: " + res[i].department_name);
-                console.log("Price: " + res[i].price);
-                console.log("Quantity: " + res[i].stock_quantity)
-                console.log('==========================')
-            }
-        }
+            console.table(res)
     })
     connection.end()
 }

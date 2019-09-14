@@ -1,11 +1,11 @@
 var mysql = require("mysql");
 var inquirer = require("inquirer");
-const cTable = require('console.table');
+require('console.table');
 var connection = mysql.createConnection({
     host: "localhost",
     port: 3306,
     user: "root",
-    password: "xxx",
+    password: "Manila22!",
     database: "bamazon"
 });
 connection.connect(function (err) {
@@ -30,7 +30,6 @@ function multChoice() {
         }
     })
 }
-
 function salesByDep() {
     var query = "SELECT d.department_id, d.department_name, d.over_head_costs, d.department_name, "
     query += "sum(p.product_sales) as product_sales, sum(p.product_sales) - over_head_costs as total_profit "
@@ -42,7 +41,6 @@ function salesByDep() {
         connection.end()
     })
 }
-
 function createNew() {
     connection.query("SELECT * FROM departments ", function (err, res) {
         if (err) throw err;
