@@ -13,3 +13,6 @@ A supervisor can view total sales by department and create new departments.
 2. Run the storefrontSchema.sql file in your MySQL workbench.
 3. Open your command line, navigate to the downloaded folder and run "npm i".
 4. Run "node bamazonCustomer.js" for customer, bamazonManager.js" for manager, or bamazonSupervisor.js" for supervisor.
+
+![mySQLstorefront](https://user-images.githubusercontent.com/50982277/67126982-34dc4d80-f1ad-11e9-9ef6-228499b4d792.png)
+
